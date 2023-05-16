@@ -14,7 +14,7 @@ export default function Home() {
 		<WalletWrapper>
 			<div className={poppins.className}>
 				<Header />
-				<div className="grid place-items-center mt-24">
+				<div className="grid place-items-center mt-24 mx-8">
 					<Table />
 				</div>
 			</div>
