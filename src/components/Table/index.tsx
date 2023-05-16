@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import {
-	AccountInfo,
-	Connection,
-	ParsedAccountData,
-	PublicKey,
-} from "@solana/web3.js";
+import { AccountInfo, ParsedAccountData, PublicKey } from "@solana/web3.js";
 import { fetchTokenAccounts } from "~/services/solana";
+import TableHeader from "./components/TableHeader";
+import TableRow from "./components/TableRow";
 
 type TokenAccountsType = {
 	pubkey: PublicKey;
@@ -41,10 +38,12 @@ const Table = () => {
 		);
 	}
 
-	if (connecting || !tokenAccounts.length) {
-		<div>
-			<p className="text-center">Connecting wallet, please wait...</p>
-		</div>;
+	if (connecting || tokenAccounts.length === 0) {
+		return (
+			<div>
+				<p className="text-center">Connecting wallet, please wait...</p>
+			</div>
+		);
 	}
 
 	return (
@@ -52,37 +51,15 @@ const Table = () => {
 			<div className="bg-white w-36 p-4 grid place-items-center rounded-t-xl border-b-4 border-emerald-700">
 				<span>Tokens</span>
 			</div>
-			<div className="bg-white rounded-b-xl rounded-e-xl p-8">
+			<div className="bg-white rounded-b-xl rounded-e-xl p-8 w-4/12 sm:w-5/12 md:w-8/12 lg:w-full overflow-x-scroll">
 				<table>
-					<thead>
-						<tr className="font-bold">
-							<th className="px-8 py-4">Pubkey</th>
-							<th>Mint address</th>
-							<th>Amount</th>
-						</tr>
-					</thead>
+					<TableHeader />
 					<tbody>
 						{tokenAccounts.map((tokenAccount) => (
-							<tr
+							<TableRow
+								tokenAccount={tokenAccount}
 								key={tokenAccount.pubkey.toString()}
-								className="border-b"
-							>
-								<td
-									className="px-8 py-4"
-									title={tokenAccount.pubkey.toString()}
-								>
-									{tokenAccount.pubkey.toString()}
-								</td>
-								<td>
-									{tokenAccount.account.data.parsed.info.mint}
-								</td>
-								<td className="text-right">
-									{
-										tokenAccount.account.data.parsed.info
-											.tokenAmount.uiAmountString
-									}
-								</td>
-							</tr>
+							/>
 						))}
 					</tbody>
 				</table>
