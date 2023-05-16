@@ -5,7 +5,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 	weight: ["400", "600"],
 });
 
-interface Props {
+export interface Props {
 	text: string;
 	onClick?: () => void;
 }
